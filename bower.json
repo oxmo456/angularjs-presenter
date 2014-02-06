@@ -1,0 +1,13 @@
+{
+    "name": "angularjs_presenter",
+    "version": "0.0.1",
+    "main": "",
+    "ignore": [
+    ],
+    "dependencies": {
+        "angular": "*",
+        "bootstrap": "*"
+    },
+    "devDependencies": {
+    }
+}
