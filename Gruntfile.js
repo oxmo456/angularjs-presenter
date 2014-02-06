@@ -13,16 +13,12 @@ module.exports = function (grunt) {
         },
         ngmin: {
             dev: {
-                src: [  "src/js/module.js",
-                    "src/js/util/**/*.js",
-                    "src/js/controllers/**/*.js",
-                    "src/js/directives/**/*.js",
-                    "src/js/services/**/*.js",
-                    "src/js/filters/**/*.js",
-                    "src/js/config.js",
-                    "src/js/run.js"
+                src: [
+                    "src/js/**/module.js",
+                    "src/js/**/config.js",
+                    "src/js/**/*.js"
                 ],
-                dest: "app/js/main.js"
+                dest: "server/js/main.js"
             }
         },
 
@@ -70,40 +66,44 @@ module.exports = function (grunt) {
         copy: {
             html: {
                 files: [
-                    {expand: true, src: ["**/*.html"], cwd: "src/", dest: "app/"}
+                    {expand: true, src: ["**/*.html"], cwd: "src/", dest: "server/"}
                 ]
             },
             components: {
                 files: [
                     {expand: true, src: ["angular/*"], cwd: "components/", dest: "server/components/"},
-                    {expand: true, src: ["bootstrap/*"], cwd: "components/", dest: "server/components/"}
+                    {expand: true, src: ["angular-animate/*"], cwd: "components/", dest: "server/components/"},
+                    {expand: true, src: ["bootstrap/**/*.*"], cwd: "components/", dest: "server/components/"}
                 ]
             },
             fonts: {
                 files: [
-                    {expand: true, src: ["fonts/**/*"], cwd: "src/", dest: "app/"}
+                    {expand: true, src: ["fonts/**/*"], cwd: "src/", dest: "server/"}
                 ]
             },
             config: {
                 files: [
-                    {expand: true, src: ["config/*.json"], cwd: "src/", dest: "app/"}
+                    {expand: true, src: ["config/*.json"], cwd: "src/", dest: "server/"}
                 ]
             },
             locales: {
                 files: [
-                    {expand: true, src: ["locales/*.json"], cwd: "src/", dest: "app/"}
+                    {expand: true, src: ["locales/*.json"], cwd: "src/", dest: "server/"}
                 ]
             },
             media: {
                 files: [
-                    {expand: true, src: ["**"], cwd: "src/media/", dest: "app/media/"}
+                    {expand: true, src: ["**"], cwd: "src/media/", dest: "server/media/"}
                 ]
             }
         },
         less: {
             development: {
                 files: {
-                    "app/css/styles.css": ["src/less/styles.less"]
+                    "server/css/styles.css": ["src/less/styles.less"]
+                },
+                files: {
+                    "server/css/presenter-styles.css": ["src/less/presenter/presenter-styles.less"]
                 }
             }
         },
@@ -122,17 +122,17 @@ module.exports = function (grunt) {
                     collapseWhitespace: true
                 },
                 files: [
-                    {expand: true, src: ["**/*.html"], cwd: "src/", dest: "app/"}
+                    {expand: true, src: ["**/*.html"], cwd: "src/", dest: "server/"}
                 ]
             }
         },
         clean: {
-            dev: ["app/*"]
+            dev: ["server/*"]
         },
         uglify: {
             dev: {
                 files: {
-                    "app/js/main.min.js": ["app/js/main.js"]
+                    "server/js/main.min.js": ["server/js/main.js"]
                 }
             }
         }
@@ -150,14 +150,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.registerTask("dev-build", ["ngmin:dev", "copy", "less:development"]);
-
     grunt.registerTask("dev-watch", ["watch"]);
 
     //start a server for development purposes
     grunt.registerTask("server-dev", ["clean:dev", "dev-build", "connect:server", "dev-watch"]);
-
-    //start a server for staging purposes
-    grunt.registerTask("server-stg", [ "dev-build", "connect:server"]);
 
     //default server (dev)
     grunt.registerTask("server", ["server-dev"]);

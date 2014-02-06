@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>AngularJS Presenter</title>
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/presenter-styles.css"/>
 </head>
 <body>
-
+<div ng-app="app">
+    <div class="container"
+         ng-app="app"
+         ng-controller="MainController">
+        <h1>PRESENTER</h1>
+        <button class="btn btn-sm btn-info" ng-click="presenter.prev()">prev</button>
+        <button class="btn btn-sm btn-info" ng-click="presenter.next()">next</button>
+        <hr>
+        <presenter name="presenter">
+            <slide template-url="/templates/app/slides/a.template.html"></slide>
+            <slide template-url="/templates/app/slides/b.template.html"></slide>
+            <slide template-url="/templates/app/slides/c.template.html"></slide>
+        </presenter>
+        <hr>
+    </div>
+</div>
+<script type="text/javascript" src="/components/angular/angular.min.js"></script>
+<script type="text/javascript" src="/components/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

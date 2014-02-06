@@ -1,0 +1,15 @@
+@import "../../mixins/transition";
+
+.slide-element {
+  .transition(opacity,1s,linear);
+  opacity: 0;
+
+  &.slide-element-visible {
+    opacity: 1;
+  }
+
+  &.slide-element-hidden {
+    opacity: 0;
+  }
+
+}

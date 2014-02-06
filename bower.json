@@ -6,6 +6,7 @@
     ],
     "dependencies": {
         "angular": "*",
+        "angular-animate": "*",
         "bootstrap": "*"
     },
     "devDependencies": {
