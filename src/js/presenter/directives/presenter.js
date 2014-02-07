@@ -1,23 +1,21 @@
-angular.module("presenter").directive("presenter", function ($rootScope, Presenter) {
+angular.module("presenter").directive("presenter", function ($route) {
 
     return {
         restrict: "E",
-        templateUrl: "/templates/presenter/directives/presenter.template.html",
         scope: true,
-        replace: true,
-        controller: function presenterController($scope, $attrs) {
-            function presenterChange(event, presenter) {
-                $scope.templateUrl = presenter.getCurrentSlideTemplateUrl();
-            }
+        controller: function ($scope, $attrs) {
 
-            var presenter = Presenter.get($attrs.name, true);
-            var removePresenterChangeListener = presenter.addChangeListener(presenterChange);
-            $scope.$on("$destroy", function () {
-                removePresenterChangeListener();
+
+            $scope.$on("$routeChangeSuccess", function (event, currentRoute, lastRoute) {
+
+                console.log("ROUTE", currentRoute);
+
+
+
             });
 
-            presenterChange(null, presenter);
         }
+
     };
 
 });
