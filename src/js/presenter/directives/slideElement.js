@@ -32,7 +32,7 @@ angular.module("presenter").directive("slideElement", function () {
             hideElement();
 
         },
-        link: function (scope, element, arguments, slideController) {
+        link: function (scope, element, args, slideController) {
             slideController.register(element.controller("slideElement"));
         }
     };

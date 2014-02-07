@@ -15,17 +15,22 @@ module.exports = function (grunt) {
             dev: {
                 src: [
                     "src/js/**/module.js",
-                    "src/js/**/config.js",
+                    "src/js/**/config*.js",
                     "src/js/**/*.js"
                 ],
+                dest: "tmp/js/main.js"
+            }
+        },
+        concat: {
+            dev: {
+                src: ["src/js/.use-strict", "src/js/.prefix", "tmp/js/main.js", "src/js/.suffix"],
                 dest: "server/js/main.js"
             }
         },
-
         watch: {
             scripts: {
                 files: ["src/**/*.js"],
-                tasks: ["ngmin:dev"],
+                tasks: ["ngmin:dev", "concat:dev"],
                 options: {
                     nospawn: true
                 }
@@ -71,8 +76,7 @@ module.exports = function (grunt) {
             },
             components: {
                 files: [
-                    {expand: true, src: ["angular/*"], cwd: "components/", dest: "server/components/"},
-                    {expand: true, src: ["angular-animate/*"], cwd: "components/", dest: "server/components/"},
+                    {expand: true, src: ["angular*/*"], cwd: "components/", dest: "server/components/"},
                     {expand: true, src: ["bootstrap/**/*.*"], cwd: "components/", dest: "server/components/"}
                 ]
             },
@@ -127,7 +131,7 @@ module.exports = function (grunt) {
             }
         },
         clean: {
-            dev: ["server/*"]
+            dev: ["server/*", "tmp/*"]
         },
         uglify: {
             dev: {
@@ -143,13 +147,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-ngmin");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-less");
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-contrib-htmlmin");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-uglify");
 
-    grunt.registerTask("dev-build", ["ngmin:dev", "copy", "less:development"]);
+    grunt.registerTask("dev-build", ["ngmin:dev", "concat:dev", "copy", "less:development"]);
     grunt.registerTask("dev-watch", ["watch"]);
 
     //start a server for development purposes

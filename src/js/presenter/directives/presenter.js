@@ -1,65 +1,22 @@
-angular.module("presenter").directive("presenter", function () {
-
-    function PresenterPublicAPI(presenterController) {
-
-        this.next = function () {
-            presenterController.next();
-        };
-
-        this.prev = function () {
-            presenterController.prev();
-        };
-
-
-    }
+angular.module("presenter").directive("presenter", function ($rootScope, Presenter) {
 
     return {
         restrict: "E",
+        templateUrl: "/templates/presenter/directives/presenter.template.html",
+        scope: true,
+        replace: true,
         controller: function presenterController($scope, $attrs) {
-
-            console.log("        PRESENTER");
-
-            //publish the public API of the controller into the current scope
-            //use the name attribute as the publish key
-            $scope[$attrs.name] = new PresenterPublicAPI(this);
-
-            var slides = [];
-            var currentSlideIndex = 0;
-            var currentSlide = null;
-
-            function update() {
-                var slide = slides[currentSlideIndex];
-                if (slide && currentSlide !== slide) {
-                    if (currentSlide) {
-                        currentSlide.hide();
-                    }
-                    currentSlide = slide;
-                    currentSlide.show();
-                }
+            function presenterChange(event, presenter) {
+                $scope.templateUrl = presenter.getCurrentSlideTemplateUrl();
             }
 
-            this.registerSlide = function (slide) {
-                slides.push(slide);
-                update();
-            };
+            var presenter = Presenter.get($attrs.name, true);
+            var removePresenterChangeListener = presenter.addChangeListener(presenterChange);
+            $scope.$on("$destroy", function () {
+                removePresenterChangeListener();
+            });
 
-            this.unregisterSlide = function (slide) {
-                //TODO
-            };
-
-            this.next = function () {
-                currentSlideIndex++;
-                if (currentSlideIndex >= slides.length) {
-                    currentSlideIndex = 0;
-                }
-                update();
-            };
-
-            this.prev = function () {
-                currentSlideIndex = Math.max(0, --currentSlideIndex);
-                update();
-            };
-
+            presenterChange(null, presenter);
         }
     };
 

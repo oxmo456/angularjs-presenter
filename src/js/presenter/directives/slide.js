@@ -11,37 +11,8 @@ angular.module("presenter").directive("slide", function () {
         },
         controller: function ($scope) {
 
-            console.log("        SLIDE");
-
-            var slideElements = [];
-            var currentSlideElementIndex = 0;
-            var currentSlideElement = null;
-
-            function update() {
-                var slideElement = slideElements[currentSlideElementIndex];
-                if (slideElement && slideElement !== currentSlideElement) {
-                    slideElement.show();
-                }
-            }
-
-            $scope.visible = false;
-
-            this.show = function () {
-                $scope.visible = true;
-                update();
-            };
-
-            this.hide = function () {
-                $scope.visible = false;
-            };
-
-            this.register = function (slideElement) {
-                slideElements.push(slideElement);
-                update();
-            };
-
         },
-        link: function (scope, element, arguments, presenterController) {
+        link: function (scope, element, args, presenterController) {
             presenterController.registerSlide(element.controller("slide"));
         }
     };

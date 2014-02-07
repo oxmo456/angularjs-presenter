@@ -1,5 +1,4 @@
-angular.module("app").controller("MainController", function ($scope) {
+angular.module("app").controller("MainController", function ($scope, $route, Presenter) {
 
-    console.log("initialize main controller", $scope);
 
 });
