@@ -5,10 +5,11 @@ angular.module("presenter").directive("presenter", function ($route) {
         scope: true,
         controller: function ($scope, $attrs) {
 
+            console.log("INIT...");
 
-            $scope.$on("$routeChangeSuccess", function (event, currentRoute, lastRoute) {
+            $scope.$on("$routeUpdate", function (event, currentRoute, lastRoute) {
 
-                console.log("ROUTE", currentRoute);
+                console.log("ROUTE UPDATE", currentRoute);
 
 
 

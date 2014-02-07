@@ -6,7 +6,7 @@ angular.module("presenter").provider("Presenter", function PresenterProvider(slu
 
         console.log(slug);
 
-        routeProvider.when("/" + slug + "/:args*", {
+        routeProvider.when("/" + slug, {
             reloadOnSearch: false,
             template: "<presenter name=\"" + slug + "\"><div ng-include=\"'" + templateUrl + "'\"></div></presenter>"
         });
