@@ -1,4 +1,4 @@
-angular.module("app").controller("MainController", function ($scope, $route, Presenter) {
+angular.module("app").controller("MainController", function ($scope, $route) {
 
 
 });

@@ -1,1 +1,1 @@
-angular.module("presenter", ["slugify"]);
+angular.module("presenter", ["slugify", "utils"]);

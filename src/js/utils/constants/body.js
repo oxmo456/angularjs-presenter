@@ -1,0 +1,1 @@
+angular.module("utils").constant("body", angular.element(document.getElementsByTagName("body")));
