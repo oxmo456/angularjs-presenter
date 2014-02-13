@@ -1,0 +1,8 @@
+<div>
+    <h2>presenter</h2>
+    <hr>
+    <div ng-repeat="route in routes">
+        <a ng-href="{{route.path}}">{{route.name}}</a>
+    </div>
+    <div ng-include="slide.templateUrl"></div>
+</div>

@@ -1,12 +1,13 @@
-<div keyboard-slide-controller>
-    <h2>{{presenter.slide.name}}
-        <small>{{presenter.slide.path}}</small>
+<div>
+    <small>default template...</small>
+    <h2>{{slide.name}}
+        <small>{{slide.data.meta}}</small>
     </h2>
 
-    <a ng-if="!!presenter.prevSlide.path"
-       ng-href="#!{{presenter.prevSlide.path}}">prev</a>
-    <a ng-if="!!presenter.nextSlide.path"
-       ng-href="#!{{presenter.nextSlide.path}}">next</a>
+    <a ng-if="!!prevSlide"
+       ng-href="{{prevSlide.path}}">prev</a>
+    <a ng-if="!!nextSlide"
+       ng-href="{{nextSlide.path}}">next</a>
 
 
 </div>

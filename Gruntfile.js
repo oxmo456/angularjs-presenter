@@ -23,14 +23,25 @@ module.exports = function (grunt) {
         },
         concat: {
             dev: {
-                src: ["src/js/.use-strict", "src/js/.prefix", "tmp/js/main.js", "src/js/.suffix"],
+                src: ["src/js/.use-strict", "src/js/.prefix", "tmp/js/polyfills.js", "tmp/js/main.js", "src/js/.suffix"],
                 dest: "server/js/main.js"
+            },
+            polyfills: {
+                src: ["src/polyfills/**/*.js"],
+                dest: "tmp/js/polyfills.js"
             }
         },
         watch: {
             scripts: {
                 files: ["src/**/*.js"],
                 tasks: ["ngmin:dev", "concat:dev"],
+                options: {
+                    nospawn: true
+                }
+            },
+            polyfills: {
+                files: ["src/polyfills/**/*.js"],
+                tasks: ["concat:polyfills", "concat:dev"],
                 options: {
                     nospawn: true
                 }
@@ -154,7 +165,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-uglify");
 
-    grunt.registerTask("dev-build", ["ngmin:dev", "concat:dev", "copy", "less:development"]);
+    grunt.registerTask("dev-build", ["ngmin:dev", "concat:polyfills", "concat:dev", "copy", "less:development"]);
     grunt.registerTask("dev-watch", ["watch"]);
 
     //start a server for development purposes
