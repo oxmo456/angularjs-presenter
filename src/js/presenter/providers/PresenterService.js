@@ -5,6 +5,8 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
 
     function Slide(index, name, path, templateUrl, data) {
 
+        var slug = slugify(name);
+
         this.getData = function () {
             return data;
         };
@@ -15,6 +17,10 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
 
         this.getName = function () {
             return name;
+        };
+
+        this.getSlug = function () {
+            return slug;
         };
 
         this.getPath = function () {
@@ -34,7 +40,7 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
         var slidesBySlug = {};
         for (var i = 0, count = slides.length; i < count; i++) {
             var slide = slides[i];
-            slidesBySlug[slugify(slide.getName())] = slide;
+            slidesBySlug[slide.getSlug()] = slide;
         }
 
         this.getName = function () {
@@ -91,11 +97,11 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
 
     }
 
-    function SlideFactory(presenterSlug, slidePathPrefix, slideTemplateBasePath) {
+    function SlideFactory(presenterSlug, slideTemplateBasePath) {
         this.create = function (data) {
             var slideName = data.name;
             var slideSlug = slugify(slideName);
-            var path = slidePathPrefix + SLASH + presenterSlug + DASH + slideSlug;
+            var path = SLASH + presenterSlug + DASH + slideSlug;
             return new Slide(data.index, slideName, path, slideTemplateBasePath + data.templateUrl, data.data);
         }
 
@@ -105,7 +111,6 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
 
         var name;
         var slideTemplateBasePath = "";
-        var slidePathPrefix = "";
         var slides = [];
 
         this.setName = function (value) {
@@ -118,11 +123,6 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
             return this;
         };
 
-        this.setSlidesPathPrefix = function (value) {
-            slidePathPrefix = value;
-            return this;
-        };
-
         this.addSlide = function (name, templateUrl, data) {
             slides.push({index: slides.length, name: name, templateUrl: templateUrl, data: data || null});
             return this;
@@ -131,7 +131,7 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
         this.build = function () {
             //TODO add parameters validation
             var presenterSlug = slugify(name);
-            var slideFactory = new SlideFactory(presenterSlug, slidePathPrefix, slideTemplateBasePath);
+            var slideFactory = new SlideFactory(presenterSlug, slideTemplateBasePath);
             slides = slides.map(function (slideData) {
                 return slideFactory.create(slideData);
             });

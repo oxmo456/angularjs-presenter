@@ -3,7 +3,6 @@ angular.module("app").config(function ($routeProvider, PresenterServiceProvider,
     var presenter = PresenterServiceProvider.builder()
         .setName(PRESENTER)
         .setSlidesTemplateBasePath("/templates/app/slides/")
-        .setSlidesPathPrefix("#!")
         .addSlide("a", "default.template.html", {
             meta: "AAA"
         })

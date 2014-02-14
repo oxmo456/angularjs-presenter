@@ -4,6 +4,7 @@ angular.module("presenter").controller("PresenterController", function ($scope, 
     function slideToObj(slide) {
         return slide ? {
             name: slide.getName(),
+            slug: slide.getSlug(),
             path: slide.getPath(),
             templateUrl: slide.getTemplateUrl(),
             data: slide.getData()
@@ -29,20 +30,20 @@ angular.module("presenter").controller("PresenterController", function ($scope, 
 
 
     function leftKeyUp() {
-        console.log("LEFT...");
+        if ($scope.prevSlide) {
+            $location.hash($scope.prevSlide.slug);
+        }
     }
 
     function rightKeyUp() {
-        console.log("RIGHT...");
+        if ($scope.nextSlide) {
+            $location.hash($scope.nextSlide.slug);
+        }
+
     }
 
-    var removeLeftKeyUpListener = KeyService.addKeyUpListener(KeyCodes.LEFT, leftKeyUp);
-    var removeRightKeyUpListener = KeyService.addKeyUpListener(KeyCodes.RIGHT, rightKeyUp);
-
-    $scope.$on("$destroy", function () {
-        removeLeftKeyUpListener();
-        removeRightKeyUpListener();
-    });
+    KeyService.addKeyUpListener($scope, KeyCodes.LEFT, leftKeyUp);
+    KeyService.addKeyUpListener($scope, KeyCodes.RIGHT, rightKeyUp);
 
     routeUpdate();
 });
