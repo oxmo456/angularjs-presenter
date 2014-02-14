@@ -1,26 +1,27 @@
-angular.module("utils").service("KeyService", function KeyService($rootScope, body) {
+angular.module("utils").service("KeyService", function KeyService($rootScope, body, EventDispatcher) {
     var KEY_UP = "keyup";
-    var dispatchers = {};
     var state = new SleepingState();
 
-    function onBodyKeyUp(event) {
-        angular.forEach(dispatchers, function (dispatcher) {
-            dispatcher.$apply(function () {
-                console.log("keyup...");
-                dispatcher.$broadcast(event.keyCode);
-            });
+    var eventDispatcher = new EventDispatcher();
 
-        })
+    function onBodyKeyUp(event) {
+        eventDispatcher.dispatch(event.keyCode);
     }
 
     function SleepingState(removeListener) {
         if (removeListener) {
             body.off(KEY_UP, onBodyKeyUp);
         }
-        this.addKeyUpListener = function (scope, keyCode, listener) {
+
+        this.addKeyUpListener = function (keyCode, listener, priority) {
             state = new ActiveState();
-            return state.addKeyUpListener(scope, keyCode, listener);
+            return state.addKeyUpListener(keyCode, listener, priority);
         };
+
+        this.removeKeyUpListener = function (keyCode, listener) {
+            throw new Error("Illegal state error");
+        };
+
     }
 
     function ActiveState() {
@@ -37,61 +38,39 @@ angular.module("utils").service("KeyService", function KeyService($rootScope, bo
                 }
             }
 
-            this.increase = function (amount) {
-                count += amount || 1;
+            this.increase = function () {
+                count++;
                 checkState();
             };
 
-            this.decrease = function (amount) {
-                count -= amount || 1;
+            this.decrease = function () {
+                count--;
                 checkState();
             };
 
         }
 
-        function dispatcher(scope) {
-            var scopeId = scope.$id;
-            var dispatcher = dispatchers[scopeId];
-            if (!dispatcher) {
-                dispatcher = dispatchers[scope.$id] = scope.$new(true);
-                dispatcher.$on("$destroy", function () {
-                    angular.forEach(dispatcher.$$listenerCount, function (value, key) {
-                        if (key !== "$destroy") {
-                            listenersCount.decrease(value);
-                        }
-                    });
-                    delete dispatchers[scopeId];
-                });
-            }
-            return dispatcher;
-        }
 
-        function listenerExists(scope, keyCode, listener) {
-            var result;
-            try {
-                var dispatcher = dispatchers[scope.$id];
-                result = dispatcher && dispatcher.$$listeners[keyCode].indexOf(listener) >= 0;
-            } catch (e) {
-                result = false;
-            }
-            return result;
-        }
-
-        this.addKeyUpListener = function (scope, keyCode, listener) {
-            if (!listenerExists(scope, keyCode, listener)) {
+        this.addKeyUpListener = function (keyCode, listener, priority) {
+            if (eventDispatcher.addEventListener(keyCode, listener, priority)) {
                 listenersCount.increase();
-                var removeListener = dispatcher(scope).$on(keyCode, listener);
-                return function () {
-                    removeListener();
-                    listenersCount.decrease();
-                };
+            }
+        };
+
+        this.removeKeyUpListener = function (keyCode, listener) {
+            if (eventDispatcher.removeEventListener(keyCode, listener)) {
+                listenersCount.decrease();
             }
         };
 
     }
 
-    this.addKeyUpListener = function (scope, keyCode, listener) {
-        return state.addKeyUpListener(scope, keyCode, listener);
+    this.addKeyUpListener = function (keyCode, listener, priority) {
+        return state.addKeyUpListener(keyCode, listener, priority);
+    };
+
+    this.removeKeyUpListener = function (keyCode, listener) {
+        return state.removeKeyUpListener(keyCode, listener);
     };
 
 

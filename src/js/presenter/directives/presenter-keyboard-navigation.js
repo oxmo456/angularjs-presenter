@@ -4,10 +4,8 @@ angular.module("presenter").directive("presenterKeyboardNavigation", function (K
         restrict: "A",
         require: "presenter",
         link: function (scope, element, attrs, presenterController) {
-            console.log("presenter navigation...");
 
             function leftKeyUp() {
-                console.log("LEFT...");
                 presenterController.prev();
             }
 
@@ -15,9 +13,14 @@ angular.module("presenter").directive("presenterKeyboardNavigation", function (K
                 presenterController.next();
             }
 
-            KeyService.addKeyUpListener(scope, KeyCodes.LEFT, leftKeyUp);
-            KeyService.addKeyUpListener(scope, KeyCodes.RIGHT, rightKeyUp);
+            KeyService.addKeyUpListener(KeyCodes.LEFT, leftKeyUp);
+            KeyService.addKeyUpListener(KeyCodes.RIGHT, rightKeyUp);
 
+
+            scope.$on("$destroy", function () {
+                KeyService.removeKeyUpListener(KeyCodes.LEFT, leftKeyUp);
+                KeyService.removeKeyUpListener(KeyCodes.RIGHT, rightKeyUp);
+            });
 
         }
 

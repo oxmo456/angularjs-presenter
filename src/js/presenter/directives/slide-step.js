@@ -4,13 +4,16 @@ angular.module("presenter").directive("slideStep", function (KeyService, KeyCode
         restrict: "A",
         require: "^slide",
         link: function (scope, element, attribute, slideController) {
-            console.log("LINK SLIDE STEP...", scope);
 
+            function left(event) {
+                event.stopPropagation();
+            }
 
-            KeyService.addKeyUpListener(scope, KeyCodes.LEFT, function () {
-                console.log("....");
-            }, Number.MAX_VALUE);
+            KeyService.addKeyUpListener(KeyCodes.LEFT, left, Number.MAX_VALUE);
 
+            element.on("$destroy", function () {
+                KeyService.removeKeyUpListener(KeyCodes.LEFT, left);
+            });
 
         }
     };
