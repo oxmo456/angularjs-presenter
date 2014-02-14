@@ -2,6 +2,7 @@ angular.module("presenter").directive("presenter", function () {
 
     var PRESENTER_ATTRIBUTE = "presenter";
     var PRESENTER_ID_ATTRIBUTE = "presenterId";
+    var ROUTE_UPDATE_EVENT = "$routeUpdate";
 
 
     return {
@@ -24,32 +25,34 @@ angular.module("presenter").directive("presenter", function () {
                 var hash = $location.hash();
                 var slide = presenter.findSlideBySlug(hash);
                 if (slide) {
-                    $scope.slide = slideToObj(slide);
-                    $scope.prevSlide = slideToObj(presenter.findPreviousSlideOf(slide));
-                    $scope.nextSlide = slideToObj(presenter.findNextSlideOf(slide));
+                    this.slide = slideToObj(slide);
+                    this.prevSlide = slideToObj(presenter.findPreviousSlideOf(slide));
+                    this.nextSlide = slideToObj(presenter.findNextSlideOf(slide));
                 } else {
-                    $scope.slide = null;
+                    this.nextSlide = this.prevSlide = this.slide = null;
                     $location.hash(null);
                 }
             }
 
             this.routes = presenter.getRoutes();
+            this.slide = null;
+            this.prevSlide = null;
+            this.nextSlide = null;
 
             this.prev = function () {
-                if ($scope.prevSlide) {
-                    $location.hash($scope.prevSlide.slug);
+                if (this.prevSlide) {
+                    $location.hash(this.prevSlide.slug);
                 }
             };
 
             this.next = function () {
-                if ($scope.nextSlide) {
-                    $location.hash($scope.nextSlide.slug);
+                if (this.nextSlide) {
+                    $location.hash(this.nextSlide.slug);
                 }
             };
 
-            $scope.$on("$routeUpdate", routeUpdate);
-
-            routeUpdate();
+            $scope.$on(ROUTE_UPDATE_EVENT, routeUpdate.bind(this));
+            routeUpdate.bind(this)();
 
         }
     };

@@ -1,4 +1,4 @@
-angular.module("presenter").directive("slide", function () {
+angular.module("presenter").directive("slideKeyboardNavigation", function () {
 
     return {
         restrict: "A",

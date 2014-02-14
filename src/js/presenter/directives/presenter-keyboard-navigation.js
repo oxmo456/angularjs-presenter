@@ -7,6 +7,7 @@ angular.module("presenter").directive("presenterKeyboardNavigation", function (K
             console.log("presenter navigation...");
 
             function leftKeyUp() {
+                console.log("LEFT...");
                 presenterController.prev();
             }
 

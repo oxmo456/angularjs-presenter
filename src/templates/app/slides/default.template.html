@@ -1,13 +1,19 @@
 <div>
     <small>default template...</small>
-    <h2>{{slide.name}}
-        <small>{{slide.data.meta}}</small>
+    <h2>{{presenter.slide.name}}
+        <small>{{presenter.slide.data.meta}}</small>
     </h2>
 
-    <a ng-if="!!prevSlide"
-       ng-href="#!{{prevSlide.path}}">prev</a>
-    <a ng-if="!!nextSlide"
-       ng-href="#!{{nextSlide.path}}">next</a>
+    <div slide-step>A</div>
+    <div slide-step>B</div>
+    <div slide-step>C</div>
+    <div slide-step>D</div>
+
+
+    <a ng-if="!!presenter.prevSlide"
+       ng-href="#!{{presenter.prevSlide.path}}">prev</a>
+    <a ng-if="!!presenter.nextSlide"
+       ng-href="#!{{presenter.nextSlide.path}}">next</a>
 
 
 </div>

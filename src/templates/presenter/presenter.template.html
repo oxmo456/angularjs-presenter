@@ -10,5 +10,5 @@
     <button class="btn btn-sm btn-info" ng-click="fullscreen.toggleFullScreen()">
         {{fullscreen.isFullScreen() ? 'exit fullscreen' : 'enter fullscreen'}}
     </button>
-    <div ng-include="slide.templateUrl"></div>
+    <div ng-include="presenter.slide.templateUrl" slide slide-keyboard-navigation></div>
 </div>

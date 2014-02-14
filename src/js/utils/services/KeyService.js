@@ -4,9 +4,9 @@ angular.module("utils").service("KeyService", function KeyService($rootScope, bo
     var state = new SleepingState();
 
     function onBodyKeyUp(event) {
-
         angular.forEach(dispatchers, function (dispatcher) {
             dispatcher.$apply(function () {
+                console.log("keyup...");
                 dispatcher.$broadcast(event.keyCode);
             });
 
