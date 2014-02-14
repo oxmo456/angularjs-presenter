@@ -154,13 +154,7 @@ angular.module("presenter").provider("PresenterService", function PresenterServi
 
         routeProvider.when(SLASH + presenter.getSlug(), {
             reloadOnSearch: false,
-            templateUrl: "/templates/presenter/presenter.template.html",
-            controller: "PresenterController",
-            resolve: {
-                presenter: function () {
-                    return presenter
-                }
-            }
+            templateUrl: "/templates/presenter/presenter.template.html"
         });
     };
 

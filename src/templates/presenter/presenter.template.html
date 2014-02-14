@@ -1,8 +1,14 @@
-<div id="presenter" presenter="presenter">
+<div presenter="presenter"
+     presenter-id="presenter"
+     presenter-keyboard-navigation
+     fullscreen="fullscreen">
     <h2>presenter</h2>
     <hr>
-    <div ng-repeat="route in routes">
+    <div ng-repeat="route in presenter.routes">
         <a ng-href="#!{{route.path}}">{{route.name}}</a>
     </div>
+    <button class="btn btn-sm btn-info" ng-click="fullscreen.toggleFullScreen()">
+        {{fullscreen.isFullScreen() ? 'exit fullscreen' : 'enter fullscreen'}}
+    </button>
     <div ng-include="slide.templateUrl"></div>
 </div>
