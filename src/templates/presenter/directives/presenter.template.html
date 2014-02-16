@@ -1,0 +1,12 @@
+<div>
+    <div ng-if="presenter.state === presenter.states.LOADING">
+        <small>loading...</small>
+    </div>
+    <div ng-if="presenter.state === presenter.states.ERROR">
+        <small>oops...</small>
+    </div>
+    <div ng-if="presenter.state === presenter.states.READY">
+        ready
+    </div>
+    <div>{{routes}}</div>
+</div>

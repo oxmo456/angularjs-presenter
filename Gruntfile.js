@@ -77,6 +77,10 @@ module.exports = function (grunt) {
             media: {
                 files: ["src/media/**/*"],
                 tasks: ["copy:media"]
+            },
+            data: {
+                files: ["src/data/**/*"],
+                tasks: ["copy:data"]
             }
         },
         copy: {
@@ -109,6 +113,11 @@ module.exports = function (grunt) {
             media: {
                 files: [
                     {expand: true, src: ["**"], cwd: "src/media/", dest: "server/media/"}
+                ]
+            },
+            data: {
+                files: [
+                    {expand: true, src: ["**"], cwd: "src/data/", dest: "server/data/"}
                 ]
             }
         },
