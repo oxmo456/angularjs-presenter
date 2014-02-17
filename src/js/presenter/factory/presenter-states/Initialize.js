@@ -1,4 +1,4 @@
-angular.module("presenter").factory("Initialize", function ($http, $q) {
+angular.module("presenter").factory("Initialize", function ($http, $q, Slide) {
 
     function loadSlides(source) {
 
@@ -44,10 +44,10 @@ angular.module("presenter").factory("Initialize", function ($http, $q) {
         for (var i = 0, count = slides.length; i < count; i++) {
             var slide = slides[i];
             var rawElement = angular.element(slide)[0];
-            result.push({
-                name: rawElement.getAttribute("slide"),
-                stepCount: rawElement.querySelectorAll("[step]").length
-            });
+            result.push(new Slide(
+                rawElement.getAttribute("slide"),
+                rawElement.querySelectorAll("[step]").length
+            ));
         }
 
         return result;
