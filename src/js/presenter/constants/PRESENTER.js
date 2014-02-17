@@ -1,1 +1,0 @@
-angular.module("presenter").constant("PRESENTER", "presenter");

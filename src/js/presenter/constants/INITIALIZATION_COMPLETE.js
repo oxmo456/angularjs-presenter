@@ -1,1 +1,0 @@
-angular.module("presenter").constant("INITIALIZATION_COMPLETE", "initialization_complete");
