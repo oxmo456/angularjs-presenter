@@ -5,7 +5,8 @@ angular.module("app").config(function ($routeProvider, $locationProvider) {
             templateUrl: "/templates/app/home.template.html"
         })
         .when("/presenter", {
-            templateUrl: "/templates/app/presenter.template.html"
+            templateUrl: "/templates/app/presenter.template.html",
+            reloadOnSearch: false
         })
         .otherwise({
             redirectTo: "/"

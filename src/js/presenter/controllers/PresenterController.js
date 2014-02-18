@@ -1,4 +1,6 @@
-angular.module("presenter").controller("PresenterController", function PresenterController($scope, $attrs, Presenter) {
+angular.module("presenter").controller("PresenterController", function PresenterController($scope, $attrs, $element,
+                                                                                           $location, $timeout,
+                                                                                           Presenter) {
 
     var SOURCE_ATTRIBUTE = "src";
     $scope.presenter = null;
@@ -7,11 +9,22 @@ angular.module("presenter").controller("PresenterController", function Presenter
         if ($scope.presenter) {
             $scope.presenter.dispose();
         } else {
-            $scope.presenter = new Presenter(source);
+            $scope.presenter = new Presenter(source, $location.path());
         }
-
     }
 
     $scope.$watch($attrs[SOURCE_ATTRIBUTE], sourceChange);
+
+    $element.on("$destroy", function () {
+        if ($scope.presenter) {
+            $scope.presenter.dispose();
+        }
+    });
+
+
+    var stepIndex = 0;
+    this.nextStepIndex = function () {
+        return stepIndex++;
+    };
 
 });

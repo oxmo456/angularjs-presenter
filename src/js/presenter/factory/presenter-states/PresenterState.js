@@ -4,11 +4,11 @@ angular.module("presenter").factory("PresenterState", function () {
 
         var state;
 
-        this.setState = function (value) {
+        this.set = function (value) {
             state = value;
         };
 
-        this.getState = function () {
+        this.get = function () {
             return state;
         };
 

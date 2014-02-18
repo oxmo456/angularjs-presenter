@@ -6,7 +6,6 @@ angular.module("app").directive("presenter", function () {
         replace: true,
         controller: "PresenterController",
         link: function (scope, element, attribute) {
-            console.log("link presenter");
         }
     };
 

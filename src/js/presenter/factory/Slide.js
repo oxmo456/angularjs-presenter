@@ -1,13 +1,30 @@
 angular.module("presenter").factory("Slide", function () {
 
-    function Slide(name, stepCount) {
+    function Slide(index, name, slug, templateUrl, route, stepIndex) {
+
+
+        this.getIndex = function () {
+            return index;
+        };
 
         this.getName = function () {
             return name;
         };
 
-        this.getStepCount = function () {
-            return stepCount;
+        this.getSlug = function () {
+            return slug;
+        };
+
+        this.getTemplateUrl = function () {
+            return templateUrl;
+        };
+
+        this.getRoute = function () {
+            return route;
+        };
+
+        this.getStepIndex = function () {
+            return stepIndex;
         };
 
     }

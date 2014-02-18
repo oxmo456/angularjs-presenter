@@ -1,4 +1,5 @@
-angular.module("presenter").factory("Initialize", function ($http, $q, Slide) {
+angular.module("presenter").factory("Initialize", function ($http, $q, Slide, SlideRoute, Ready, InitializationFailure,
+                                                            slugify) {
 
     function loadSlides(source) {
 
@@ -12,8 +13,11 @@ angular.module("presenter").factory("Initialize", function ($http, $q, Slide) {
         })(source);
 
         function loadSlide(path, id, slides, deferred) {
-            $http.get(path(id)).then(function success(response) {
-                slides.push(response.data);
+            $http.get(path(id), {cache: true}).then(function success(response) {
+                slides.push({
+                    templateUrl: path(id),
+                    template: response.data
+                });
                 loadSlide(path, ++id, slides, deferred);
             }, function failure() {
                 deferred.resolve(slides);
@@ -38,48 +42,76 @@ angular.module("presenter").factory("Initialize", function ($http, $q, Slide) {
         return result;
     }
 
-    function extractSlidesData(slides) {
+    function createRoute(slideName, basePath, slideSlug, stepIndex) {
+        return new SlideRoute(slideName, basePath + "#" + slideSlug + (angular.isDefined(stepIndex) ? "~" + stepIndex : ""));
+    }
 
-        var result = [];
-        for (var i = 0, count = slides.length; i < count; i++) {
-            var slide = slides[i];
-            var rawElement = angular.element(slide)[0];
-            result.push(new Slide(
-                rawElement.getAttribute("slide"),
-                rawElement.querySelectorAll("[step]").length
-            ));
-        }
+    function createSlides(presenter) {
+        return function (slides) {
+            var result = [];
+            var basePath = presenter.getBasePath();
+            var slideIndex = 0;
+            for (var i = 0, count = slides.length; i < count; i++) {
+                var slide = slides[i];
+                var rawElement = angular.element(slide.template)[0];
+                var slideName = rawElement.getAttribute("slide");
+                var slideSlug = slugify(slideName);
+                var stepCount = rawElement.querySelectorAll("[step]").length;
+                if (stepCount === 0) {
+                    result.push(new Slide(
+                        slideIndex++,
+                        slideName,
+                        slideSlug,
+                        slide.templateUrl,
+                        createRoute(slideName, basePath, slideSlug),
+                        null
+                    ));
+                } else {
+                    for (var j = 0; j < stepCount; j++) {
+                        result.push(new Slide(
+                            slideIndex++,
+                            slideName,
+                            slideSlug,
+                            slide.templateUrl,
+                            createRoute(slideName, basePath, slideSlug, j),
+                            j
+                        ));
+                    }
+                }
 
-        return result;
+            }
+            return result;
+        };
     }
 
     function Initialize(presenterState) {
 
-
-        function initialize() {
-            var source = presenterState.getPresenter().getSource();
-
+        function initialize(presenterState) {
+            var presenter = presenterState.getPresenter();
+            var source = presenter.getSource();
             loadSlides(source)
                 .then(validateLoadedSlides)
-                .then(extractSlidesData)
+                .then(createSlides(presenter))
                 .then(function success(slides) {
-
-                    console.log("OK", slides);
-
+                    presenterState.set(new Ready(presenterState, slides));
                 }, function failure() {
-
-                    console.log("KO");
-
+                    presenterState.set(new InitializationFailure(presenterState));
                 });
         }
-
 
         this.dispose = function () {
             //TODO
         };
 
-        initialize();
+        this.next = function () {
+            //TODO;
+        };
 
+        this.prev = function () {
+            //TODO;
+        };
+
+        initialize(presenterState);
 
     }
 

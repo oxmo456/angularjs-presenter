@@ -1,0 +1,11 @@
+@import "../../mixins/transition";
+
+.step {
+  .transition(opacity,1s,linear);
+  opacity: 1;
+
+  &.hidden-step {
+    opacity: 0;
+  }
+
+}
