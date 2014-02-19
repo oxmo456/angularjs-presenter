@@ -1,8 +1,7 @@
-angular.module("presenter").controller("PresenterController", function PresenterController($scope, $attrs, $element,
-                                                                                           $location, $timeout,
-                                                                                           Presenter) {
+angular.module("presenter").controller("PresenterController", function PresenterController($scope, $attrs, $element, $location, $timeout, Presenter) {
 
     var SOURCE_ATTRIBUTE = "src";
+    var stepIndex = 0;
     $scope.presenter = null;
 
     function sourceChange(source) {
@@ -21,8 +20,10 @@ angular.module("presenter").controller("PresenterController", function Presenter
         }
     });
 
+    $scope.$watch("presenter.slide.templateUrl", function () {
+        stepIndex = 0;
+    });
 
-    var stepIndex = 0;
     this.nextStepIndex = function () {
         return stepIndex++;
     };

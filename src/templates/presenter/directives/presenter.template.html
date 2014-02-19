@@ -1,7 +1,9 @@
-<div>
-    <h2>presenter</h2>
-    <a ng-click="presenter.prev()">prev</a>
-    <a ng-click="presenter.next()">next</a>
-
+<div fullscreen="fullscreen">
+    <div class="tools">
+        <a ng-click="presenter.prev()">prev</a>
+        <a ng-click="presenter.next()">next</a>
+        <a ng-click="fullscreen.toggleFullScreen()">{{ fullscreen.isFullScreen() ? 'exit fullscreen' : 'enter
+            fullscreen'}}</a>
+    </div>
     <div ng-include="presenter.slide.templateUrl"></div>
 </div>
